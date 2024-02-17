@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Smart Dog Care</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    .navbar {
+      background-color: #333;
+      color: #fff;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 20px;
+    }
+    .navbar a {
+      color: #fff;
+      text-decoration: none;
+      margin: 0 10px;
+    }
+    h1 {
+      text-align: center;
+    }
+    .dog-info {
+      border: 1px solid #edf04b;
+      border-radius: 5px;
+      padding: 10px;
+      margin-bottom: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background-color:#edf04b ;
+    }
+    .dog-info img {
+      max-width: 50%;
+      height: auto;
+      border-radius: 5px;
+    }
+    .dog-info-text {
+      flex: 1;
+      padding: 0 20px;
+    }
+    .shop-now {
+      background-color: #0c5fad;
+      color: #fff;
+      padding: 5px 10px;
+      border-radius: 5px;
+    }
+  </style>
+</head>
+<body>
+  <div class="navbar">
+    <div>
+      <a href="#">Our Services</a>
+      <a href="#">About Us</a>
+      <a href="#">Products</a>
+    </div>
+    <div>
+      <a href="#">Pet Care</a>
+      <a href="#">Contact</a>
+      <a href="#">Sign In</a>
+      <a href="#">Register</a>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="dog-info">
+      <div class="dog-info-text">
+        <h1>Taking care for your Smart Dog!</h1>
+        <p>Human-canine bonding is the relationship between dogs and humans.</p>
+        <button class="shop-now">Shop Now</button>
+      </div>
+      <img class="dog-info img" src="https://res.cloudinary.com/difbmfdoo/image/upload/v1708168010/blob_2_cwi6gi.png" alt="Dog">
+    </div>
+    <h1 id="title"></h1>
+    <p id="summary"></p>
+    <div id="dogInfo"></div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      fetch('https://dogs-care.onrender.com/api/dogs_care')
+        .then(response => response.json())
+        .then(data => {
+          const resources = data[0];
+          const title = document.getElementById('title');
+          const summary = document.getElementById('summary');
+          title.textContent = resources.text_title;
+          summary.textContent = resources.text_summary;
+          const dogInfoContainer = document.getElementById('dogInfo');
+          for (let i = 1; i <= 5; i++) {
+            const imageUrl = resources['image' + i];
+            const dogDiv = document.createElement('div');
+            dogDiv.classList.add('dog-info');
+            dogDiv.innerHTML = `
+              <img src="${imageUrl}" alt="Dog ${i}">
+            `;
+            dogInfoContainer.appendChild(dogDiv);
+          }
+        })
+        .catch(error => console.error('Error fetching dog info:', error));
+    });
+  </script>
+</body>
+</html>
